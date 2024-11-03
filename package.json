@@ -1,0 +1,9 @@
+{
+  "name": "com.voidex.buildpipeline",
+  "displayName": "Build Pipeline",
+  "version": "1.5.9",
+  "unity": "2021.3",
+  "dependencies": {
+  },
+  "type": "tool"
+}
