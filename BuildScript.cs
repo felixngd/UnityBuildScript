@@ -452,37 +452,41 @@ namespace Voidex.BuildPipeline
                 // ignored
             }
 
-            SetupAddressableRule();
-            AssetDatabase.SaveAssets();
+            //SetupAddressableRule();
+            //AssetDatabase.SaveAssets();
 #if UNITY_ANDROID
             Debug.Log("Android Bundle version code: " + PlayerSettings.Android.bundleVersionCode);
 #endif
 
 
             //scenes
-            try
-            {
-                if (string.IsNullOrEmpty(customScenesToBuild))
-                {
-                    buildPlayerOptions.scenes =
-                        EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
-                }
-                else
-                {
-                    var sceneList = customScenesToBuild.Split(',');
-                    buildPlayerOptions.scenes = sceneList.Select(s => s.Trim()).ToArray();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error parsing custom scenes to build: " + e.Message);
-                buildPlayerOptions.scenes =
-                    EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
-            }
+            // try
+            // {
+            //     if (string.IsNullOrEmpty(customScenesToBuild))
+            //     {
+            //         buildPlayerOptions.scenes =
+            //             EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
+            //     }
+            //     else
+            //     {
+            //         var sceneList = customScenesToBuild.Split(',');
+            //         buildPlayerOptions.scenes = sceneList.Select(s => s.Trim()).ToArray();
+            //     }
+            // }
+            // catch (Exception e)
+            // {
+            //     Debug.LogError("Error parsing custom scenes to build: " + e.Message);
+            //     buildPlayerOptions.scenes =
+            //         EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
+            // }
+            
+            buildPlayerOptions.scenes =
+                EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
 
             Debug.Log("Scenes to build: " + string.Join(",", buildPlayerOptions.scenes));
             Debug.Log("Start building project");
             UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
+            Debug.Log("ABC");
 // #if UNITY_ANDROID
 //             switch (exportProject)
 //             {
