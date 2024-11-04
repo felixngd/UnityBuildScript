@@ -480,26 +480,28 @@ namespace Voidex.BuildPipeline
                     EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
             }
 
-
-            //UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
-#if UNITY_ANDROID
-            switch (exportProject)
-            {
-                case "false":
-                    EditorUserBuildSettings.exportAsGoogleAndroidProject = false;
-                    UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
-                    break;
-                case "true":
-                    ExportProject();
-                    break;
-
-                default:
-                    EditorUserBuildSettings.exportAsGoogleAndroidProject = false;
-                    UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
-                    Debug.Log("Export project: " + exportProject);
-                    break;
-            }
-#endif
+            Debug.Log("Scenes to build: " + string.Join(",", buildPlayerOptions.scenes));
+            Debug.Log("Start building project");
+            UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
+// #if UNITY_ANDROID
+//             switch (exportProject)
+//             {
+//                 case "false":
+//                     EditorUserBuildSettings.exportAsGoogleAndroidProject = false;
+//                     UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
+//                     break;
+//                 case "true":
+//                     ExportProject();
+//                     break;
+//
+//                 default:
+//                     EditorUserBuildSettings.exportAsGoogleAndroidProject = false;
+//                     UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
+//                     Debug.Log("Export project: " + exportProject);
+//                     break;
+//             }
+// #endif
+            
         }
 
         public static void SetIl2CppCodeGeneration(string targetName, Il2CppCodeGeneration codeGeneration)
