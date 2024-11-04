@@ -486,6 +486,7 @@ namespace Voidex.BuildPipeline
             Debug.Log("Scenes to build: " + string.Join(",", buildPlayerOptions.scenes));
             Debug.Log("Start building project");
             UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
+            UnityEditor.EditorApplication.Exit(0);
 // #if UNITY_ANDROID
 //             switch (exportProject)
 //             {
