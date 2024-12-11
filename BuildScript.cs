@@ -1,12 +1,18 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEditor.Build;
 using UnityEngine;
 using UnityEditor;
 
 namespace Voidex.BuildPipeline
 {
+    public interface ICustomPrebuild
+    {
+        void SetUp();
+    }
+    
     public sealed class BuildScript
     {
         static string buildTarget = "";
@@ -46,6 +52,17 @@ namespace Voidex.BuildPipeline
 
         #region BuildPlayer
 
+        public static void PrebuildProcessor()
+        {
+            var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(ICustomPrebuild).IsAssignableFrom(t) && !t.IsAbstract);
+
+            foreach (var type in types)
+            {
+                ICustomPrebuild instance = (ICustomPrebuild)Activator.CreateInstance(type);
+                instance.SetUp();
+            }
+        }
+        
         public static void PerformBuild()
         {
             //get commandline arguments -outputPath $(Build.BinariesDirectory)
@@ -483,6 +500,8 @@ namespace Voidex.BuildPipeline
             buildPlayerOptions.scenes =
                 EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
 
+            PrebuildProcessor();
+            
             Debug.Log("Scenes to build: " + string.Join(",", buildPlayerOptions.scenes));
             Debug.Log("Start building project");
             UnityEditor.BuildPipeline.BuildPlayer(buildPlayerOptions);
