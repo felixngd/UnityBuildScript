@@ -10,7 +10,7 @@ namespace Voidex.BuildPipeline
 {
     public interface ICustomPrebuild
     {
-        void SetUp();
+        void SetUp(string buildNumber);
     }
     
     public sealed class BuildScript
@@ -52,14 +52,14 @@ namespace Voidex.BuildPipeline
 
         #region BuildPlayer
 
-        public static void PrebuildProcessor()
+        public static void PrebuildProcessor(string buildNumber)
         {
             var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(ICustomPrebuild).IsAssignableFrom(t) && !t.IsAbstract);
 
             foreach (var type in types)
             {
                 ICustomPrebuild instance = (ICustomPrebuild)Activator.CreateInstance(type);
-                instance.SetUp();
+                instance.SetUp(buildNumber);
             }
         }
         
@@ -500,7 +500,7 @@ namespace Voidex.BuildPipeline
             buildPlayerOptions.scenes =
                 EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
 
-            PrebuildProcessor();
+            PrebuildProcessor(buildNumber);
             
             Debug.Log("Scenes to build: " + string.Join(",", buildPlayerOptions.scenes));
             Debug.Log("Start building project");
