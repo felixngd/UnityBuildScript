@@ -54,12 +54,13 @@ namespace Voidex.BuildPipeline
 
         public static void PrebuildProcessor(string buildNumber)
         {
-            var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(ICustomPrebuild).IsAssignableFrom(t) && !t.IsAbstract);
+            var types = TypeCache.GetTypesDerivedFrom<ICustomPrebuild>();
 
             foreach (var type in types)
             {
                 ICustomPrebuild instance = (ICustomPrebuild)Activator.CreateInstance(type);
                 instance.SetUp(buildNumber);
+                Console.WriteLine("Detect prebuild: " + type.ToString());
             }
         }
         
