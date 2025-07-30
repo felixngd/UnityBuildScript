@@ -296,7 +296,7 @@ public static class CustomBuilder
     // File name is simple. Only when archive/moving file. It change name using shell
     public static string GetAndroidBuildPath(string extension = ".apk")
     {
-        return Configs[ConfigKey.OutputPath] + Configs[ConfigKey.OutputFileName] + Configs[ConfigKey.OutputExtension];
+        return Path.Combine(Configs[ConfigKey.OutputPath], Configs[ConfigKey.OutputFileName] + "." + Configs[ConfigKey.OutputExtension]);
         //var projectDir = new DirectoryInfo(Application.dataPath).Parent;
         //var time = DateTime.Now; // Use build time as name not git Commit date time. Due to sometime parse failed
         //var branch = Configs["GIT_BRANCH"];
